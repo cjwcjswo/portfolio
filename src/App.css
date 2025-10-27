@@ -858,6 +858,17 @@ body > .modal-overlay {
     padding: 10px 15px !important;
     font-size: 12px !important;
   }
+  
+  /* 유튜브 영상 모바일 최적화 */
+  .project-section iframe {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  .project-section div[style*="aspectRatio"] {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
 }
 
 @media (max-width: 480px) {

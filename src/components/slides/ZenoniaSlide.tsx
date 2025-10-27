@@ -14,6 +14,55 @@ const ZenoniaSlide = () => {
           <p>
             Full 3D MMORPG 프로젝트의 C++ 서버 개발을 담당, 수천 명 이상의 동시 접속 환경을 가정한 고성능 멀티스레드 서버 아키텍처를 구현했습니다.
           </p>
+          
+          {/* 유튜브 영상 */}
+          <div style={{ 
+            marginTop: '20px',
+            textAlign: 'center',
+            background: 'rgba(255, 255, 255, 0.05)',
+            padding: '20px',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
+          }}>
+            <h5 style={{ color: '#63e2b7', marginBottom: '15px', fontSize: '1.1rem' }}>
+              ⚔️ 게임 트레일러 영상
+            </h5>
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '600px',
+              margin: '0 auto',
+              aspectRatio: '16/9',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)'
+            }}>
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/dn2ZoNo4pB4?si=0X0gvs6SFTZbuz2g"
+                title="제노니아 크로노브레이크 트레일러 영상"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%'
+                }}
+              ></iframe>
+            </div>
+            <p style={{ 
+              color: 'rgba(255, 255, 255, 0.7)', 
+              fontSize: '0.9rem', 
+              marginTop: '10px',
+              fontStyle: 'italic'
+            }}>
+              제노니아 크로노브레이크의 공식 트레일러를 확인해보세요
+            </p>
+          </div>
         </div>
 
         <div className="project-section">

@@ -14,6 +14,55 @@ const DancevilSlide = () => {
           <p>
             유저가 직접 음악과 뮤직비디오를 제작하고 공유하는 UGC(User-Generated Content) 기반의 모바일 소셜 게임입니다.
           </p>
+          
+          {/* 유튜브 영상 */}
+          <div style={{ 
+            marginTop: '20px',
+            textAlign: 'center',
+            background: 'rgba(255, 255, 255, 0.05)',
+            padding: '20px',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
+          }}>
+            <h5 style={{ color: '#63e2b7', marginBottom: '15px', fontSize: '1.1rem' }}>
+              🎮 게임 플레이 영상
+            </h5>
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '600px',
+              margin: '0 auto',
+              aspectRatio: '16/9',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)'
+            }}>
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/756eY2-MmQs?si=nAgXHFQuS6uwenZQ"
+                title="Dancevil 게임 플레이 영상"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%'
+                }}
+              ></iframe>
+            </div>
+            <p style={{ 
+              color: 'rgba(255, 255, 255, 0.7)', 
+              fontSize: '0.9rem', 
+              marginTop: '10px',
+              fontStyle: 'italic'
+            }}>
+              댄스빌 게임의 실제 플레이 모습을 확인해보세요
+            </p>
+          </div>
         </div>
 
         <div className="project-section">
