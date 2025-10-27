@@ -57,15 +57,17 @@ body {
 .slide-content {
   background: rgba(0, 0, 0, 0.85);
   border-radius: 20px;
-  padding: 50px;
-  max-width: 1200px;
+  padding: 40px;
+  max-width: 90vw;
   width: 100%;
   box-shadow: 0 20px 60px rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(15px);
   animation: slideIn 0.8s ease-out;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes slideIn {
@@ -168,13 +170,70 @@ body {
 /* 네비게이션 도트 */
 .navigation-dots {
   position: fixed;
-  right: 30px;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 100;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+}
+
+.navigation-texts {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px 20px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-text {
+  background-color: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 15px;
+  white-space: nowrap;
+}
+
+.nav-text::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: #FFFFFF;
+  transition: width 0.3s ease;
+}
+
+.nav-text.active {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-text.active::after {
+  width: 80%;
+}
+
+.nav-text:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .dot {
@@ -199,20 +258,7 @@ body {
 
 /* 화살표 네비게이션 */
 .nav-arrow {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  background: rgba(0, 0, 0, 0.7);
-  color: #FFFFFF;
-  font-size: 24px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  display: none;
 }
 
 .nav-arrow:hover:not(:disabled) {
@@ -417,4 +463,462 @@ body {
     flex-direction: column;
     align-items: center;
   }
+}
+
+.projects-slide .sub-navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.projects-slide .sub-nav-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+/* 프로젝트 썸네일 그리드 */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.project-thumbnail {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+}
+
+.project-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.project-thumbnail:hover .project-image {
+  transform: scale(1.05);
+}
+
+.project-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+}
+
+.project-icon {
+  font-size: 4rem;
+  opacity: 0.8;
+}
+
+.project-thumbnail:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.project-header {
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+
+.project-header h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.project-period {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.project-body {
+  padding: 20px;
+  color: white;
+}
+
+.project-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-tag {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.project-footer {
+  padding: 15px 20px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.view-details {
+  color: #63e2b7;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* 모달창 스타일 - Portal로 렌더링되어 완전히 독립적 */
+.modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: rgba(0, 0, 0, 0.5); /* 더 반투명하게 */
+  backdrop-filter: blur(12px); /* 블러 효과 강화 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* 최고 우선순위 */
+  padding: 20px; /* 여백 추가 */
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  /* Slide 컴포넌트의 모든 제약에서 벗어남 */
+  transform: none !important;
+  overflow: visible !important;
+}
+
+.modal-content {
+  background: rgba(0, 0, 0, 0.75); /* 더 반투명하게 */
+  border-radius: 15px; /* 모서리 둥글게 */
+  width: 95vw; /* 화면의 95% 너비 */
+  height: auto; /* 자동 높이로 변경 */
+  min-height: 90vh; /* 최소 높이 설정 */
+  max-width: 95vw;
+  max-height: 95vh; /* 최대 높이를 늘림 */
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* 더 진한 테두리 */
+  backdrop-filter: blur(15px); /* 블러 효과 강화 */
+  animation: modalSlideIn 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.7); /* 더 진한 그림자 */
+  position: relative; /* 상대 위치로 변경 */
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background: rgba(255, 255, 255, 0.08); /* 약간 더 진하게 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  min-height: 70px;
+  backdrop-filter: blur(15px); /* 헤더 블러 효과 강화 */
+  border-radius: 15px 15px 0 0; /* 상단 모서리만 둥글게 */
+}
+
+.modal-header h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  font-weight: 300;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+  height: auto; /* 자동 높이로 변경 */
+  min-height: calc(90vh - 70px); /* 최소 높이 조정 */
+  max-height: calc(95vh - 70px); /* 최대 높이 설정 */
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* 모달창 내부 콘텐츠 스타일 */
+.modal-body > div {
+  padding: 30px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: calc(90vh - 150px); /* 모달 크기에 맞게 조정 */
+  height: auto;
+  overflow: visible; /* 오버플로우 허용 */
+  padding-bottom: 50px; /* 하단 여백 추가 */
+}
+
+.modal-body h2 {
+  color: white;
+  margin-top: 0;
+  font-size: 1.8rem;
+  border-bottom: 3px solid #63e2b7;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+/* Portal로 렌더링된 모달창이 Slide 컨테이너의 제약을 받지 않도록 */
+body > .modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
+  padding: 20px !important; /* 여백 추가 */
+  transform: none !important;
+  overflow: visible !important;
+  background: rgba(0, 0, 0, 0.5) !important; /* 더 반투명 배경 */
+  backdrop-filter: blur(12px) !important; /* 강화된 블러 효과 */
+}
+
+/* Slide 컨테이너가 모달창에 영향을 주지 않도록 */
+.slide-container {
+  overflow: visible !important;
+}
+
+.slide {
+  overflow: visible !important;
+}
+
+/* 반응형 웹디자인 */
+@media (max-width: 768px) {
+  /* 모바일 네비게이션 */
+  .navigation-texts {
+    top: 10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+    max-width: 95vw !important;
+  }
+  
+  .nav-text {
+    padding: 6px 12px !important;
+    font-size: 0.8rem !important;
+    min-width: auto !important;
+  }
+  
+  /* 슬라이드 콘텐츠 */
+  .slide-content {
+    padding: 20px !important;
+    max-width: 95vw !important;
+    max-height: 90vh !important;
+  }
+  
+  /* IntroSlide 모바일 */
+  .pixel-text {
+    font-size: 2rem !important;
+  }
+  
+  /* AboutSlide 모바일 */
+  .about-container {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+  
+  .profile-image {
+    width: 120px !important;
+    height: 160px !important;
+  }
+  
+  /* SkillsSlide 모바일 */
+  .skills-grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
+  
+  /* ProjectsSlide 모바일 */
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
+  
+  .project-thumbnail {
+    margin-bottom: 15px !important;
+  }
+  
+  /* 모달창 모바일 */
+  .modal-content {
+    width: 95vw !important;
+    height: auto !important;
+    min-height: 95vh !important;
+    max-height: 98vh !important;
+    border-radius: 10px !important;
+  }
+  
+  .modal-body {
+    height: auto !important;
+    min-height: calc(95vh - 70px) !important;
+    max-height: calc(98vh - 70px) !important;
+  }
+  
+  .modal-body > div {
+    padding: 20px !important;
+    padding-bottom: 40px !important;
+    min-height: calc(95vh - 120px) !important;
+    height: auto !important;
+  }
+  
+  /* HubWorld 모바일 */
+  .hub-controls {
+    bottom: 10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    padding: 10px 15px !important;
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* 초소형 모바일 */
+  .navigation-texts {
+    gap: 4px !important;
+    padding: 6px 8px !important;
+  }
+  
+  .nav-text {
+    padding: 4px 8px !important;
+    font-size: 0.7rem !important;
+  }
+  
+  .slide-content {
+    padding: 15px !important;
+  }
+  
+  .pixel-text {
+    font-size: 1.5rem !important;
+  }
+  
+  .modal-content {
+    width: 98vw !important;
+    height: 98vh !important;
+  }
+}
+
+.project-section {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-section h4 {
+  color: #63e2b7;
+  border-bottom: 1px solid #63e2b7;
+  padding-bottom: 5px;
+  margin-top: 0;
+}
+
+.project-section h5 {
+  color: #a7d1fa;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.project-section p, .project-section ul {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.project-section ul {
+  padding-left: 20px;
+}
+
+.tech-badge-category {
+  font-weight: bold;
+  color: #fadcb1;
+  margin-right: 10px;
+  font-size: 0.9rem;
 }

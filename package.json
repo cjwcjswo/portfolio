@@ -16,9 +16,12 @@
     "vite": "^7.1.7"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.4.0",
     "@types/three": "^0.180.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "three": "^0.180.0"
+    "three": "^0.180.0",
+    "three-stdlib": "^2.36.0"
   }
 }

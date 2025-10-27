@@ -69,53 +69,115 @@ const IntroSlide = () => {
       </div>
       
       <div style={{ 
-        marginBottom: '40px',
-        padding: '15px 30px',
-        border: '2px solid rgba(255, 255, 255, 0.3)',
-        borderRadius: '8px',
-        background: 'rgba(255, 255, 255, 0.05)'
+        marginBottom: '50px',
+        padding: '25px 40px',
+        border: '3px solid rgba(99, 226, 183, 0.6)',
+        borderRadius: '15px',
+        background: 'linear-gradient(135deg, rgba(99, 226, 183, 0.1), rgba(99, 226, 183, 0.05))',
+        boxShadow: '0 0 30px rgba(99, 226, 183, 0.3)',
+        maxWidth: '100%',
+        boxSizing: 'border-box'
       }}>
         <h3 style={{ 
-          fontSize: '2rem',
-          color: '#FFFFFF',
+          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
+          color: '#63e2b7',
           fontWeight: 'bold',
           margin: 0,
-          fontFamily: 'Mabiyet, Courier New, monospace'
+          fontFamily: 'Mabiyet, Courier New, monospace',
+          textShadow: '0 0 10px rgba(99, 226, 183, 0.5)'
         }}>
           최진우
         </h3>
         <p style={{ 
-          fontSize: '1.2rem', 
-          color: 'rgba(255, 255, 255, 0.8)', 
-          marginTop: '10px',
-          fontFamily: 'Mabiyet, monospace'
+          fontSize: 'clamp(1rem, 3vw, 1.4rem)', 
+          color: '#FFFFFF', 
+          marginTop: '15px',
+          fontFamily: 'Mabiyet, monospace',
+          fontWeight: 'bold'
         }}>
-          Com2us | 책임 | 8년 차
+          Com2us 책임 | 8년 차 게임 서버 개발자
         </p>
       </div>
       
       <div style={{ 
         marginBottom: '60px',
-        maxWidth: '700px'
+        maxWidth: '100%',
+        width: '100%',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: '15px',
+        padding: '0 10px',
+        boxSizing: 'border-box'
       }}>
         <div style={{ 
-          padding: '20px',
-          border: '2px solid rgba(255, 255, 255, 0.2)',
-          borderRadius: '10px',
-          marginBottom: '15px',
-          background: 'rgba(255, 255, 255, 0.05)'
+          padding: '15px',
+          border: '2px solid rgba(255, 255, 255, 0.3)',
+          borderRadius: '12px',
+          background: 'rgba(255, 255, 255, 0.08)',
+          textAlign: 'center',
+          minHeight: '120px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
         }}>
+          <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', marginBottom: '8px' }}>⚔️</div>
           <p style={{ 
-            fontSize: '1.1rem', 
-            lineHeight: '1.8', 
+            fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', 
             color: '#FFFFFF',
             margin: 0,
-            fontFamily: 'Mabiyet, monospace'
+            fontFamily: 'Mabiyet, monospace',
+            fontWeight: 'bold',
+            lineHeight: '1.3'
           }}>
-            ▸ PHP, Golang, C++<br />
-            ▸ MMORPG & UGC Social Game<br />
-            ▸ DevOps & CI/CD<br />
-            ▸ High Performance Server Architecture
+            MMORPG<br />서버 개발
+          </p>
+        </div>
+        
+        <div style={{ 
+          padding: '15px',
+          border: '2px solid rgba(255, 255, 255, 0.3)',
+          borderRadius: '12px',
+          background: 'rgba(255, 255, 255, 0.08)',
+          textAlign: 'center',
+          minHeight: '120px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        }}>
+          <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', marginBottom: '8px' }}>🎵</div>
+          <p style={{ 
+            fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', 
+            color: '#FFFFFF',
+            margin: 0,
+            fontFamily: 'Mabiyet, monospace',
+            fontWeight: 'bold',
+            lineHeight: '1.3'
+          }}>
+            UGC Social<br />게임 개발
+          </p>
+        </div>
+        
+        <div style={{ 
+          padding: '15px',
+          border: '2px solid rgba(255, 255, 255, 0.3)',
+          borderRadius: '12px',
+          background: 'rgba(255, 255, 255, 0.08)',
+          textAlign: 'center',
+          minHeight: '120px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        }}>
+          <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', marginBottom: '8px' }}>🚀</div>
+          <p style={{ 
+            fontSize: 'clamp(0.8rem, 2.5vw, 1rem)', 
+            color: '#FFFFFF',
+            margin: 0,
+            fontFamily: 'Mabiyet, monospace',
+            fontWeight: 'bold',
+            lineHeight: '1.3'
+          }}>
+            고성능<br />서버 아키텍처
           </p>
         </div>
       </div>
@@ -123,13 +185,16 @@ const IntroSlide = () => {
       {/* Press Any Button */}
       <div className="press-button" style={{ 
         marginTop: 'auto',
-        padding: '20px',
-        fontSize: '1.5rem',
+        padding: 'clamp(15px, 4vw, 20px)',
+        fontSize: 'clamp(1rem, 3vw, 1.5rem)',
         color: '#FFFFFF',
         border: '3px solid rgba(255, 255, 255, 0.5)',
         borderRadius: '10px',
         background: 'rgba(255, 255, 255, 0.1)',
-        minWidth: '400px'
+        minWidth: 'clamp(300px, 80vw, 400px)',
+        maxWidth: '100%',
+        boxSizing: 'border-box',
+        textAlign: 'center'
       }}>
         ► PRESS ➡️ BUTTON ◄
       </div>

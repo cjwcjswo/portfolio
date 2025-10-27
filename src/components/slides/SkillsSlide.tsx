@@ -2,92 +2,163 @@ const SkillsSlide = () => {
   const skills = [
     {
       title: 'Backend Development',
-      items: 'PHP, Golang(Go), C++, Python, Node.js',
-      icon: '💻'
-    },
-    {
-      title: 'Architecture',
-      items: '하이브리드 아키텍처, 마이크로서비스(MSA), 이벤트 기반 시스템',
-      icon: '🏗️'
+      items: ['C++', 'Python', 'PHP', 'Golang', 'Node.js'],
+      icon: '💻',
+      level: 'Expert',
+      color: '#667eea'
     },
     {
       title: 'Concurrency',
-      items: '멀티스레드 프로그래밍, 동시성 제어 (Lock-Free, Job Queue)',
-      icon: '⚡'
+      items: ['멀티스레드', 'Lock-Free', 'Job Queue'],
+      icon: '⚡',
+      level: 'Expert',
+      color: '#f093fb'
     },
     {
       title: 'Database & Storage',
-      items: 'MySQL, Redis, Memcached, PostgreSQL',
-      icon: '💾'
+      items: ['MySQL', 'Redis', 'Memcached', 'PostgreSQL'],
+      icon: '💾',
+      level: 'Advanced',
+      color: '#4facfe'
     },
     {
       title: 'DevOps & CI/CD',
-      items: 'Docker, Jenkins, Capistrano, Nginx, Supervisor',
-      icon: '🚀'
+      items: ['Docker', 'Jenkins', 'Nginx', 'Supervisor'],
+      icon: '🚀',
+      level: 'Advanced',
+      color: '#43e97b'
     },
     {
       title: 'Monitoring & Logging',
-      items: 'Grafana, EFK Stack (Elasticsearch, Fluentd, Kibana), nGrinder',
-      icon: '📊'
+      items: ['Grafana', 'EFK Stack', 'nGrinder'],
+      icon: '📊',
+      level: 'Intermediate',
+      color: '#fa709a'
     },
     {
       title: 'Message Queue',
-      items: 'RabbitMQ, Scribe',
-      icon: '📨'
+      items: ['RabbitMQ'],
+      icon: '📨',
+      level: 'Advanced',
+      color: '#ffecd2'
     }
   ];
 
+  const getLevelColor = (level: string) => {
+    switch(level) {
+      case 'Expert': return '#63e2b7';
+      case 'Advanced': return '#4facfe';
+      case 'Intermediate': return '#fa709a';
+      default: return '#ffffff';
+    }
+  };
+
   return (
-    <div className="slide-content" style={{ maxWidth: '1000px' }}>
-      <h2>🛠️ 주요 역량</h2>
+    <div className="slide-content" style={{ maxWidth: '1200px' }}>
+      <h2>🛠️ 핵심 기술 스택</h2>
       
-      <div style={{
+      <div className="skills-grid" style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '12px',
-        marginTop: '20px'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: '20px',
+        marginTop: '30px'
       }}>
         {skills.map((skill, index) => (
           <div
             key={index}
             style={{
-              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%)',
-              padding: '15px',
-              borderRadius: '12px',
+              background: `linear-gradient(135deg, ${skill.color}20, ${skill.color}10)`,
+              padding: '25px',
+              borderRadius: '15px',
               color: 'white',
-              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
-              transition: 'transform 0.3s ease',
-              cursor: 'default'
+              border: `2px solid ${skill.color}40`,
+              boxShadow: `0 8px 25px ${skill.color}30`,
+              transition: 'all 0.3s ease',
+              cursor: 'default',
+              position: 'relative',
+              overflow: 'hidden'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.transform = 'translateY(-8px)';
+              e.currentTarget.style.boxShadow = `0 12px 35px ${skill.color}50`;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = `0 8px 25px ${skill.color}30`;
             }}
           >
-            <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>
-              {skill.icon}
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center',
+              marginBottom: '15px'
+            }}>
+              <div style={{ fontSize: '2rem' }}>
+                {skill.icon}
+              </div>
+              <div style={{
+                background: getLevelColor(skill.level),
+                color: 'white',
+                padding: '4px 12px',
+                borderRadius: '20px',
+                fontSize: '0.8rem',
+                fontWeight: 'bold'
+              }}>
+                {skill.level}
+              </div>
             </div>
+            
             <h4 style={{
-              fontSize: '1rem',
-              marginBottom: '8px',
+              fontSize: '1.2rem',
+              marginBottom: '15px',
               color: 'white',
-              borderBottom: '2px solid rgba(255, 255, 255, 0.3)',
-              paddingBottom: '5px'
+              fontWeight: 'bold'
             }}>
               {skill.title}
             </h4>
-            <p style={{
-              fontSize: '0.8rem',
-              lineHeight: '1.5',
-              color: 'rgba(255, 255, 255, 0.95)',
-              margin: 0
+            
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px'
             }}>
-              {skill.items}
-            </p>
+              {skill.items.map((item, itemIndex) => (
+                <span
+                  key={itemIndex}
+                  style={{
+                    background: `${skill.color}30`,
+                    color: 'white',
+                    padding: '6px 12px',
+                    borderRadius: '20px',
+                    fontSize: '0.85rem',
+                    fontWeight: '500',
+                    border: `1px solid ${skill.color}60`
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
           </div>
         ))}
+      </div>
+      
+      <div style={{
+        marginTop: '40px',
+        padding: '20px',
+        background: 'linear-gradient(135deg, rgba(99, 226, 183, 0.1), rgba(99, 226, 183, 0.05))',
+        borderRadius: '15px',
+        border: '2px solid rgba(99, 226, 183, 0.3)',
+        textAlign: 'center'
+      }}>
+        <p style={{ 
+          color: '#63e2b7', 
+          fontSize: '1.1rem', 
+          fontWeight: 'bold',
+          margin: 0 
+        }}>
+          💡 8년간 다양한 프로젝트를 통해 검증된 기술 역량
+        </p>
       </div>
     </div>
   );
