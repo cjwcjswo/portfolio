@@ -768,6 +768,19 @@ body > .modal-overlay {
   overflow: visible !important;
 }
 
+/* 터치 컨트롤 애니메이션 */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 20px rgba(255, 100, 100, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 100, 100, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 100, 100, 0.5);
+  }
+}
+
 /* 반응형 웹디자인 */
 @media (max-width: 768px) {
   /* 모바일 네비게이션 */

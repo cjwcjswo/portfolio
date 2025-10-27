@@ -4,6 +4,14 @@ import { Suspense, useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { FBXLoader } from 'three-stdlib';
 
+// Window 객체에 터치 핸들러 타입 추가
+declare global {
+  interface Window {
+    touchMoveHandler?: (direction: string) => void;
+    touchZoomHandler?: (direction: 'in' | 'out') => void;
+  }
+}
+
 interface HubWorldProps {
   onZoneEnter: (zoneName: string) => void;
 }
@@ -283,12 +291,237 @@ function TriggerZone({
   );
 }
 
+// 터치 컨트롤 컴포넌트
+function TouchControls({ onMove, onZoom, onEnter }: { 
+  onMove: (direction: string) => void; 
+  onZoom: (direction: 'in' | 'out') => void;
+  onEnter: () => void;
+}) {
+  const [isTouchActive, setIsTouchActive] = useState(false);
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+  const [joystickPosition, setJoystickPosition] = useState<{ x: number; y: number } | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+    setIsTouchActive(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+    if (!touchStart || !isTouchActive) return;
+
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - touchStart.x;
+    const deltaY = touch.clientY - touchStart.y;
+    
+    // 조이스틱 영역 (화면 왼쪽 하단)
+    const joystickArea = { x: 50, y: window.innerHeight - 150, size: 100 };
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+    if (distance < joystickArea.size) {
+      setJoystickPosition({ x: deltaX, y: deltaY });
+      
+      // 이동 방향 결정
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        onMove(deltaX > 0 ? 'right' : 'left');
+      } else {
+        onMove(deltaY > 0 ? 'down' : 'up');
+      }
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault();
+    setIsTouchActive(false);
+    setJoystickPosition(null);
+    setTouchStart(null);
+  };
+
+  const handleZoom = (direction: 'in' | 'out') => {
+    onZoom(direction);
+  };
+
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: '20px',
+      left: '20px',
+      right: '20px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-end',
+      zIndex: 1000,
+      pointerEvents: 'none'
+    }}>
+      {/* 가상 조이스틱 */}
+      <div
+        style={{
+          width: '100px',
+          height: '100px',
+          background: 'rgba(0, 0, 0, 0.5)',
+          borderRadius: '50%',
+          border: '2px solid rgba(255, 255, 255, 0.3)',
+          position: 'relative',
+          pointerEvents: 'auto',
+          touchAction: 'none'
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* 조이스틱 핸들 */}
+        <div
+          style={{
+            width: '30px',
+            height: '30px',
+            background: 'rgba(255, 255, 255, 0.8)',
+            borderRadius: '50%',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: `translate(-50%, -50%) ${joystickPosition ? `translate(${joystickPosition.x * 0.3}px, ${joystickPosition.y * 0.3}px)` : ''}`,
+            transition: joystickPosition ? 'none' : 'transform 0.2s ease'
+          }}
+        />
+        {/* 방향 표시 */}
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: 'white',
+          fontSize: '12px',
+          fontWeight: 'bold'
+        }}>↑</div>
+        <div style={{
+          position: 'absolute',
+          bottom: '10px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: 'white',
+          fontSize: '12px',
+          fontWeight: 'bold'
+        }}>↓</div>
+        <div style={{
+          position: 'absolute',
+          left: '10px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          color: 'white',
+          fontSize: '12px',
+          fontWeight: 'bold'
+        }}>←</div>
+        <div style={{
+          position: 'absolute',
+          right: '10px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          color: 'white',
+          fontSize: '12px',
+          fontWeight: 'bold'
+        }}>→</div>
+      </div>
+
+      {/* 줌 컨트롤 */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+        pointerEvents: 'auto'
+      }}>
+        <button
+          onClick={() => handleZoom('in')}
+          style={{
+            width: '50px',
+            height: '50px',
+            background: 'rgba(0, 0, 0, 0.7)',
+            border: '2px solid rgba(255, 255, 255, 0.3)',
+            borderRadius: '50%',
+            color: 'white',
+            fontSize: '20px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          +
+        </button>
+        <button
+          onClick={() => handleZoom('out')}
+          style={{
+            width: '50px',
+            height: '50px',
+            background: 'rgba(0, 0, 0, 0.7)',
+            border: '2px solid rgba(255, 255, 255, 0.3)',
+            borderRadius: '50%',
+            color: 'white',
+            fontSize: '20px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          −
+        </button>
+      </div>
+
+      {/* 포털 입장 버튼 */}
+      <button
+        onClick={onEnter}
+        style={{
+          width: '80px',
+          height: '80px',
+          background: 'rgba(255, 100, 100, 0.8)',
+          border: '3px solid rgba(255, 255, 255, 0.5)',
+          borderRadius: '50%',
+          color: 'white',
+          fontSize: '12px',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pointerEvents: 'auto',
+          boxShadow: '0 0 20px rgba(255, 100, 100, 0.5)',
+          animation: 'pulse 2s infinite'
+        }}
+      >
+        <div style={{ fontSize: '16px', marginBottom: '2px' }}>🚪</div>
+        <div style={{ fontSize: '10px' }}>입장</div>
+      </button>
+    </div>
+  );
+}
+
 // 3D 씬 컴포넌트
-function Scene({ onZoneEnter }: { onZoneEnter: (zoneName: string) => void }) {
+function Scene({ onZoneEnter, onTouchMove, onTouchZoom }: { 
+  onZoneEnter: (zoneName: string) => void;
+  onTouchMove?: (direction: string) => void;
+  onTouchZoom?: (direction: 'in' | 'out') => void;
+}) {
   const [characterPosition, setCharacterPosition] = useState<[number, number, number]>([0, 0, 0]);
   const [characterRotation, setCharacterRotation] = useState(0);
   const [cameraDistance, setCameraDistance] = useState(10); // 카메라 거리 상태 추가
+  const [isMobile, setIsMobile] = useState(false);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
+
+  // 모바일 감지
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -341,6 +574,65 @@ function Scene({ onZoneEnter }: { onZoneEnter: (zoneName: string) => void }) {
       window.removeEventListener('wheel', handleWheel);
     };
   }, [characterPosition, onZoneEnter, cameraDistance]);
+
+  // 터치 컨트롤 핸들러
+  const handleTouchMove = (direction: string) => {
+    const moveSpeed = 0.15;
+    let moveX = 0;
+    let moveZ = 0;
+    let targetRotation = characterRotation;
+
+    switch (direction) {
+      case 'up':
+        moveZ = -moveSpeed;
+        targetRotation = Math.PI;
+        break;
+      case 'down':
+        moveZ = moveSpeed;
+        targetRotation = 0;
+        break;
+      case 'left':
+        moveX = -moveSpeed;
+        targetRotation = -Math.PI / 2;
+        break;
+      case 'right':
+        moveX = moveSpeed;
+        targetRotation = Math.PI / 2;
+        break;
+    }
+
+    // 위치 업데이트
+    let newX = characterPosition[0] + moveX;
+    let newZ = characterPosition[2] + moveZ;
+
+    // 경계 제한
+    newX = Math.max(-20, Math.min(20, newX));
+    newZ = Math.max(-20, Math.min(20, newZ));
+
+    setCharacterPosition([newX, characterPosition[1], newZ]);
+    setCharacterRotation(targetRotation);
+  };
+
+  const handleTouchZoom = (direction: 'in' | 'out') => {
+    const zoomSpeed = 0.5;
+    const newDistance = direction === 'in' 
+      ? cameraDistance - zoomSpeed 
+      : cameraDistance + zoomSpeed;
+    
+    setCameraDistance(Math.max(3, Math.min(20, newDistance)));
+  };
+
+  // 외부 핸들러와 연결
+  useEffect(() => {
+    if (onTouchMove) {
+      // 터치 이동 핸들러를 외부로 전달
+      window.touchMoveHandler = handleTouchMove;
+    }
+    if (onTouchZoom) {
+      // 터치 줌 핸들러를 외부로 전달
+      window.touchZoomHandler = handleTouchZoom;
+    }
+  }, [onTouchMove, onTouchZoom]);
 
   // 카메라 업데이트 (고정된 3인칭 시점 + 줌)
   useEffect(() => {
@@ -461,18 +753,72 @@ function Scene({ onZoneEnter }: { onZoneEnter: (zoneName: string) => void }) {
 }
 
 function HubWorld({ onZoneEnter }: HubWorldProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 모바일 감지
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // 터치 컨트롤 핸들러
+  const handleTouchMove = (direction: string) => {
+    if (window.touchMoveHandler) {
+      window.touchMoveHandler(direction);
+    }
+  };
+
+  const handleTouchZoom = (direction: 'in' | 'out') => {
+    if (window.touchZoomHandler) {
+      window.touchZoomHandler(direction);
+    }
+  };
+
+  const handleTouchEnter = () => {
+    // 포털 입장 로직 (기존 키보드 로직과 동일)
+    const zones = [
+      { name: 'intro', pos: [0, 0, -10] },
+      { name: 'about', pos: [-10, 0, 0] },
+      { name: 'skills', pos: [10, 0, 0] },
+      { name: 'projects', pos: [-10, 0, 10] },
+      { name: 'personal', pos: [10, 0, 10] },
+    ];
+
+    // 현재 캐릭터 위치는 Scene에서 관리되므로, 간단히 가장 가까운 존을 찾아 입장
+    // 실제로는 Scene에서 현재 위치를 전달받아야 하지만, 일단 첫 번째 존으로 입장
+    onZoneEnter('intro');
+  };
+
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'fixed', top: 0, left: 0 }}>
       <Canvas shadows>
         <Suspense fallback={null}>
-          <Scene onZoneEnter={onZoneEnter} />
+          <Scene 
+            onZoneEnter={onZoneEnter}
+            onTouchMove={handleTouchMove}
+            onTouchZoom={handleTouchZoom}
+          />
         </Suspense>
       </Canvas>
+      
+      {/* 모바일 터치 컨트롤 */}
+      {isMobile && (
+        <TouchControls 
+          onMove={handleTouchMove}
+          onZoom={handleTouchZoom}
+          onEnter={handleTouchEnter}
+        />
+      )}
       
       {/* 컨트롤 안내 */}
       <div className="hub-controls" style={{
         position: 'absolute',
-        bottom: '20px',
+        bottom: isMobile ? '140px' : '20px',
         left: '50%',
         transform: 'translateX(-50%)',
         background: 'rgba(0, 0, 0, 0.7)',
@@ -485,7 +831,12 @@ function HubWorld({ onZoneEnter }: HubWorldProps) {
         border: '1px solid rgba(255, 255, 255, 0.2)'
       }}>
         <div style={{ marginBottom: '5px', fontWeight: 'bold' }}>🎮 Controls</div>
-        <div>방향키 or WASD: 이동 | SPACE: 포털 입장 | 마우스 휠: 줌</div>
+        <div>
+          {isMobile 
+            ? '터치 조이스틱: 이동 | +/− 버튼: 줌 | 포털 근처에서 터치: 입장'
+            : '방향키 or WASD: 이동 | SPACE: 포털 입장 | 마우스 휠: 줌'
+          }
+        </div>
       </div>
     </div>
   );
