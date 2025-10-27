@@ -13,6 +13,7 @@ type Mode = 'hub' | 'slide';
 function App() {
   const [mode, setMode] = useState<Mode>('hub');
   const [currentSlide, setCurrentSlide] = useState(-1);
+  const [isMobile, setIsMobile] = useState(false);
 
   const slideTitles = ['Intro', 'About', '기술 스택', '참여 프로젝트', '개인 프로젝트'];
   const slides = [
@@ -41,6 +42,18 @@ function App() {
       setMode('slide');
     }
   };
+
+  // 모바일 감지
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+      setIsMobile(mobile);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // 허브 월드로 돌아가기
   const returnToHub = useCallback(() => {
@@ -112,36 +125,38 @@ function App() {
             ))}
           </div>
 
-          {/* 허브 월드로 돌아가기 버튼 */}
-          <button
-            onClick={returnToHub}
-            style={{
-              position: 'fixed',
-              top: '20px',
-              left: '20px',
-              background: 'rgba(0, 0, 0, 0.7)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              color: 'white',
-              padding: '10px 20px',
-              borderRadius: '20px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: '600',
-              backdropFilter: 'blur(10px)',
-              zIndex: 200,
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(0, 0, 0, 0.9)';
-              e.currentTarget.style.borderColor = 'white';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(0, 0, 0, 0.7)';
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-            }}
-          >
-            ← 허브 월드로 돌아가기 (ESC)
-          </button>
+          {/* 허브 월드로 돌아가기 버튼 (데스크톱만) */}
+          {!isMobile && (
+            <button
+              onClick={returnToHub}
+              style={{
+                position: 'fixed',
+                top: '20px',
+                left: '20px',
+                background: 'rgba(0, 0, 0, 0.7)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                color: 'white',
+                padding: '10px 20px',
+                borderRadius: '20px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '600',
+                backdropFilter: 'blur(10px)',
+                zIndex: 200,
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.9)';
+                e.currentTarget.style.borderColor = 'white';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.7)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+              }}
+            >
+              ← 허브 월드로 돌아가기 (ESC)
+            </button>
+          )}
         </>
       )}
     </div>
